@@ -26,34 +26,8 @@
 #include "uaio/fdmon.h"
 
 
-typedef int uaio_sleep_t;
-
-
-#undef UAIO_ARG1
-#undef UAIO_ARG2
-#undef UAIO_ENTITY
-#define UAIO_ENTITY uaio_sleep
-#define UAIO_ARG1 struct uaio_fdmon *
-#define UAIO_ARG2 time_t
-#include "uaio/generic.h"
-
-
 int
-uaio_sleep_create(uaio_sleep_t *sleep);
-
-
-int
-uaio_sleep_destroy(uaio_sleep_t *sleep);
-
-
-ASYNC
-uaio_sleepA(struct uaio_task *self, uaio_sleep_t *state,
-        struct uaio_fdmon *iom, time_t miliseconds);
-
-
-#define UAIO_SLEEP(self, state, iom, miliseconds) \
-    UAIO_AWAIT(self, uaio_sleep, uaio_sleepA, state, \
-            (struct uaio_fdmon*)iom, miliseconds)
+uaio_sleep(struct uaio_task *task, unsigned long us);
 
 
 #endif  // UAIO_SLEEP_H_
