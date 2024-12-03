@@ -1,0 +1,4 @@
+version: "1.0.0"
+description: "ESP32 C AsyncIO (non-blocking IO) programming library."
+url: "https://github.com/pylover/uaio"
+license: "MIT"

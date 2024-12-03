@@ -1,0 +1,5 @@
+menu "uaio"
+	config UAIO_MODULES
+		bool "Enable uaio modules system."
+		default y
+endmenu
