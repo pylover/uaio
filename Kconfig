@@ -1,5 +1,24 @@
 menu "uaio"
-	config UAIO_MODULES
-		bool "Enable uaio modules system."
-		default y
+	config UAIO_SEMAPHORE
+		bool "Enable uaio semaphore support"
+        default y
+
+	config UAIO_TICKTIMEOUT_SHORT_US
+		int "busy time modules timeout in microseconds"
+        default 1000
+
+	config UAIO_TICKTIMEOUT_LONG_US
+		int "idle time modules timeout in microseconds"
+        default 10000
+
+	config UAIO_SELECT
+		bool "Enable uaio select(2) modules"
+        default y
+
+	config UAIO_SELECT_MAXFILES
+		int "Maximim allowed files to monitor using select(2)"
+		depends on UAIO_SELECT
+        default 32
+
 endmenu
+

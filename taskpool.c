@@ -20,7 +20,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include "uaio/taskpool.h"
+#include "taskpool.h"
 
 
 #define TASK_RESET(t, s) \

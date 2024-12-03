@@ -1,1 +1,2 @@
+- lint
 - idf component registry

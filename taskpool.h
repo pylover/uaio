@@ -20,7 +20,7 @@
 #define UAIO_TASKPOOL_H_
 
 
-#include "uaio/uaio.h"
+#include "uaio.h"
 
 
 struct uaio_taskpool {
