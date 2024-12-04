@@ -115,4 +115,9 @@ uaio_select_forget(int fd);
 #endif  // CONFIG_UAIO_SELECT
 
 
+#ifdef CONFIG_UAIO_UART
+
+#endif  // CONFIG_UAIO_UART
+
+
 #endif  // UAIO_H_

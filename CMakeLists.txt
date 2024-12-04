@@ -1,17 +1,27 @@
-idf_component_register(
-  SRCS 
-    uaio.c
-    taskpool.c
-  INCLUDE_DIRS "include"
-  REQUIRES elog esp_driver_uart esp_hw_support esp_timer
+set(sources
+  "uaio.c"
 )
 
 
-# include_directories(
-#   $ENV{HERE}/build/esp-idf/uaio
-#   $ENV{HERE}/components/esp_hw_support/include
-# )
+if (CONFIG_UAIO_SEMAPHORE) 
+  list(APPEND sources
+    "semaphore.c"
+  )
+endif()
+
+
+if (CONFIG_UAIO_SELECT) 
+  list(APPEND sources
+    "select.c"
+  )
+endif()
+
+
+idf_component_register(
+  SRCS "${sources}"
+  INCLUDE_DIRS "include"
+  REQUIRES elog esp_driver_uart esp_hw_support esp_timer freertos
+)
 
 
 target_compile_options(${COMPONENT_LIB} PRIVATE -fms-extensions)
-
