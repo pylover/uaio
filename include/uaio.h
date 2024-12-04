@@ -30,6 +30,7 @@
 
 
 /* Generic stuff */
+#define ASYNC void
 #define UAIO_NAME_PASTER(x, y) x ## _ ## y
 #define UAIO_NAME_EVALUATOR(x, y)  UAIO_NAME_PASTER(x, y)
 #define UAIO_NAME(n) UAIO_NAME_EVALUATOR(UAIO_ENTITY, n)
@@ -237,9 +238,6 @@ uaio_semaphore_release(struct uaio_task *task);
 
 
 #endif  // CONFIG_UAIO_SEMAPHORE
-
-
-#define ASYNC void
 
 
 #endif  // UAIO_H_
