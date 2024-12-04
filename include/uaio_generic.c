@@ -16,11 +16,10 @@
  *
  *  Author: Vahid Mardani <vahid.mardani@gmail.com>
  */
-#include <stdlib.h>  // NOLINT
+#include <stdlib.h>
 #include <unistd.h>
 
-#include "uaio/uaio.h"
-#include "uaio/semaphore.h"
+#include <uaio.h>
 
 
 void
@@ -76,7 +75,7 @@ UAIO_NAME(call_new)(struct uaio_task *task, UAIO_NAME(coro) coro,
 
 
 int
-UAIO_NAME(spawn) (struct uaio *c, UAIO_NAME(coro) coro, UAIO_NAME(t) *state
+UAIO_NAME(spawn) (UAIO_NAME(coro) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
     #ifdef UAIO_ARG2
@@ -86,7 +85,7 @@ UAIO_NAME(spawn) (struct uaio *c, UAIO_NAME(coro) coro, UAIO_NAME(t) *state
         ) {
     struct uaio_task *task = NULL;
 
-    task = uaio_task_new(c);
+    task = uaio_task_new();
     if (task == NULL) {
         return -1;
     }
@@ -110,49 +109,11 @@ failure:
 }
 
 
-int
-UAIO_NAME(forever) (UAIO_NAME(coro) coro, UAIO_NAME(t) *state
-#ifdef UAIO_ARG1
-        , UAIO_ARG1 arg1
-    #ifdef UAIO_ARG2
-            , UAIO_ARG2 arg2
-    #endif  // UAIO_ARG2
-#endif  // UAIO_ARG1
-        , size_t maxtasks) {
-    struct uaio * c = uaio_create(maxtasks);
-    if (c == NULL) {
-        return -1;
-    }
-
-    if (UAIO_NAME(spawn)(c, coro, state
-#ifdef UAIO_ARG1
-        , arg1
-    #ifdef UAIO_ARG2
-            , arg2
-    #endif  // UAIO_ARG2
-#endif  // UAIO_ARG1
-        )) {  // NOLINT
-        goto failure;
-    }
-
-    if (uaio_loop(c)) {
-        goto failure;
-    }
-
-    uaio_destroy(c);
-    return 0;
-
-failure:
-    uaio_destroy(c);
-    return -1;
-}
-
-
 #ifdef CONFIG_UAIO_SEMAPHORE
 
 
 int
-UAIO_NAME(spawn_semaphore) (struct uaio *c, struct uaio_semaphore *semaphore,
+UAIO_NAME(spawn_semaphore) (struct uaio_semaphore *semaphore,
         UAIO_NAME(coro) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
@@ -163,7 +124,7 @@ UAIO_NAME(spawn_semaphore) (struct uaio *c, struct uaio_semaphore *semaphore,
         ) {
     struct uaio_task *task = NULL;
 
-    task = uaio_task_new(c);
+    task = uaio_task_new();
     if (task == NULL) {
         return -1;
     }
@@ -188,6 +149,5 @@ failure:
     uaio_task_dispose(task);
     return -1;
 }
-
 
 #endif

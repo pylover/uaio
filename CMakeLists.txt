@@ -1,5 +1,6 @@
 set(sources
   "uaio.c"
+  "taskpool.c"
 )
 
 
@@ -20,7 +21,7 @@ endif()
 idf_component_register(
   SRCS "${sources}"
   INCLUDE_DIRS "include"
-  REQUIRES elog esp_driver_uart esp_hw_support esp_timer freertos
+  REQUIRES elog esp_timer freertos
 )
 
 

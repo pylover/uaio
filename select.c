@@ -1,25 +1,10 @@
+#include <time.h>
+
+#include "uaio.h"
+#include "select.h"
 
 
 #define TSEMPTY(ts) (!((ts).tv_sec || (ts).tv_nsec))
-#define FILEEVENT_RESET(fe) \
-            (fe)->task = NULL; \
-            (fe)->fd = -1; \
-            (fe)->events = 0
-
-
-struct uaio_fileevent {
-    int fd;
-    int events;
-    struct uaio_task *task;
-};
-
-
-struct uaio_select {
-    unsigned int maxfileno;
-    size_t waitingfiles;
-    struct uaio_fileevent *events;
-    size_t eventscount;
-};
 
 
 static long
@@ -54,9 +39,8 @@ _select_task_timeout_us(struct uaio_task *task) {
 }
 
 
-static int
-_select_tick(struct uaio *c, struct uaio_select *s,
-        unsigned int timeout_us) {
+int
+uaio_select_tick(struct uaio_select *s, unsigned int timeout_us) {
     int i;
     int fd;
     int nfds;
@@ -147,50 +131,4 @@ _select_tick(struct uaio *c, struct uaio_select *s,
     s->eventscount = s->waitingfiles;
 
     return 0;
-}
-
-
-int
-uaio_select_monitor(struct uaio_task *task, int fd, int events,
-        unsigned int timeout_us) {
-    struct uaio_select *s = &_uaio->select;
-    struct uaio_fileevent *fe;
-    if ((fd < 0) || (fd > s->maxfileno) || (s->eventscount == s->maxfileno)) {
-        return -1;
-    }
-
-    if (timeout_us > 0) {
-        clock_gettime(CLOCK_MONOTONIC, &task->select_timestamp);
-        task->select_timeout_us = timeout_us;
-    }
-    else {
-        task->select_timestamp.tv_sec = 0;
-        task->select_timestamp.tv_nsec = 0;
-        task->select_timeout_us = 0;
-    }
-
-    fe = &s->events[s->eventscount++];
-    s->waitingfiles++;
-    fe->events = events;
-    fe->task = task;
-    fe->fd = fd;
-    return 0;
-}
-
-
-int
-uaio_select_forget(int fd) {
-    int i;
-    struct uaio_fileevent *fe;
-
-    for (i = 0; i < _uaio->select.eventscount; i++) {
-        fe = &_uaio->select.events[i];
-        if (fe->fd == fd) {
-            FILEEVENT_RESET(fe);
-            _uaio->select.waitingfiles--;
-            return 0;
-        }
-    }
-
-    return -1;
 }

@@ -16,7 +16,7 @@
  *
  *  Author: Vahid Mardani <vahid.mardani@gmail.com>
  */
-#include "uaio/semaphore.h"
+#include "semaphore.h"
 
 
 int

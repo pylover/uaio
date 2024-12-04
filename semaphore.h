@@ -16,40 +16,25 @@
  *
  *  Author: Vahid Mardani <vahid.mardani@gmail.com>
  */
-#ifndef TASKPOOL_H_
-#define TASKPOOL_H_
+#ifndef SEMAPHORE_H_
+#define SEMAPHORE_H_
 
 
 #include "uaio.h"
 
 
-struct uaio_taskpool {
-    struct uaio_task *tasks;
-    struct uaio_task *last;
-    size_t size;
-    size_t count;
-};
+typedef struct uaio_semaphore {
+    volatile int value;
+    struct uaio_task *task;
+} uaio_semaphore_t;
 
 
 int
-uaio_taskpool_init(struct uaio_taskpool *p, size_t size);
+uaio_semaphore_begin(struct uaio_task *task, struct uaio_semaphore *s);
 
 
 int
-uaio_taskpool_deinit(struct uaio_taskpool *pool);
+uaio_semaphore_end(struct uaio_task *task);
 
 
-struct uaio_task *
-uaio_taskpool_next(struct uaio_taskpool *pool, struct uaio_task *task,
-        enum uaio_taskstatus statuses);
-
-
-struct uaio_task *
-uaio_taskpool_lease(struct uaio_taskpool *pool);
-
-
-int
-uaio_taskpool_release(struct uaio_taskpool *pool, struct uaio_task *task);
-
-
-#endif  // TASKPOOL_H_
+#endif  // SEMAPHORE_H_

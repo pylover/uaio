@@ -20,10 +20,5 @@ menu "uaio"
 		depends on UAIO_SELECT
         default 32
 
-	config UAIO_UART
-		bool "Enable ESP32 IDF UART installer and helpers"
-		depends on UAIO_SELECT
-		default y
-
 endmenu
 

@@ -16,12 +16,7 @@
  *
  *  Author: Vahid Mardani <vahid.mardani@gmail.com>
  */
-#ifndef UAIO_H_  // NOLINT(build/header_guard)
-#error "uaio.h must be imported before importing the uaio_generic.h"
-#error "And also #undef UAIO_ENTITY, UAIO_ARG1 and UAIO_ARG2 then #define " \
-    "UAIO_ENTITY and optionals: UAIO_ARG1/UAIO_ARG2 before importing the " \
-    "uaio_generic.h"
-#else
+#include <uaio.h>
 
 
 typedef void (*UAIO_NAME(coro)) (struct uaio_task *self, UAIO_NAME(t) *state
@@ -66,7 +61,7 @@ UAIO_NAME(call_new)(struct uaio_task *task, UAIO_NAME(coro) coro,
 
 
 int
-UAIO_NAME(spawn) (struct uaio *c, UAIO_NAME(coro) coro, UAIO_NAME(t) *state
+UAIO_NAME(spawn) (UAIO_NAME(coro) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
     #ifdef UAIO_ARG2
@@ -77,13 +72,12 @@ UAIO_NAME(spawn) (struct uaio *c, UAIO_NAME(coro) coro, UAIO_NAME(t) *state
 
 
 int
-UAIO_NAME(forever) (UAIO_NAME(coro) coro, UAIO_NAME(t) *state
+UAIO_NAME(spawn_semaphore) (struct uaio_semaphore *semaphore,
+        UAIO_NAME(coro) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
     #ifdef UAIO_ARG2
             , UAIO_ARG2 arg2
     #endif  // UAIO_ARG2
 #endif  // UAIO_ARG1
-        , size_t maxtasks);
-
-#endif  // UAIO_H_
+        );  // NOLINT
