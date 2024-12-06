@@ -38,7 +38,7 @@ UAIO_NAME(invoker)(struct uaio_task *task) {
 
 
 int
-UAIO_NAME(call_new)(struct uaio_task *task, UAIO_NAME(coro) coro,
+UAIO_NAME(call_new)(struct uaio_task *task, UAIO_NAME(coro_t) coro,
         UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
@@ -75,7 +75,7 @@ UAIO_NAME(call_new)(struct uaio_task *task, UAIO_NAME(coro) coro,
 
 
 int
-UAIO_NAME(spawn) (UAIO_NAME(coro) coro, UAIO_NAME(t) *state
+UAIO_NAME(spawn) (UAIO_NAME(coro_t) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
     #ifdef UAIO_ARG2
@@ -114,7 +114,7 @@ failure:
 
 int
 UAIO_NAME(spawn_semaphore) (struct uaio_semaphore *semaphore,
-        UAIO_NAME(coro) coro, UAIO_NAME(t) *state
+        UAIO_NAME(coro_t) coro, UAIO_NAME(t) *state
 #ifdef UAIO_ARG1
         , UAIO_ARG1 arg1
     #ifdef UAIO_ARG2
