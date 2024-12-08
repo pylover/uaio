@@ -4,6 +4,8 @@
 #include <freertos/task.h>
 #include <esp_sleep.h>
 
+#include <elog.h>
+
 #include "uaio.h"
 #include "taskpool.h"
 #include "select.h"
@@ -66,6 +68,9 @@ uaio_file_monitor(struct uaio_task *task, int fd, int events,
         task->select_timestamp.tv_nsec = 0;
         task->select_timeout_us = 0;
     }
+
+    // struct timespec ts = task->select_timestamp;
+    // DEBUG("%lld.%.9ld", (long long)ts.tv_sec, ts.tv_nsec);
 
     fe = &s->events[s->eventscount++];
     s->waitingfiles++;

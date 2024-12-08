@@ -5,11 +5,11 @@ menu "uaio"
 
 	config UAIO_TICKTIMEOUT_SHORT_US
 		int "busy time modules timeout in microseconds"
-        default 1000
+        default 10000
 
 	config UAIO_TICKTIMEOUT_LONG_US
 		int "idle time modules timeout in microseconds"
-        default 10000
+        default 100000
 
 	config UAIO_SELECT
 		bool "Enable uaio select(2) modules"

@@ -1,4 +1,7 @@
 #include <time.h>
+#include <errno.h>
+
+#include <elog.h>
 
 #include "uaio.h"
 #include "select.h"
@@ -83,6 +86,7 @@ uaio_select_tick(struct uaio_select *s, unsigned int timeout_us) {
         }
     }
 
+    errno = 0;
     nfds = select(s->maxfileno + 1, &rfds, &wfds, &efds, &tv);
     if (nfds == -1) {
         return -1;
