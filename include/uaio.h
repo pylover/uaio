@@ -129,14 +129,29 @@ uaio_task_sleep(struct uaio_task *task, unsigned long us);
         if (entity ## _call_new(task, coro, __VA_ARGS__)) { \
             (task)->status = UAIO_TERMINATING; \
         } \
+        errno = 0; \
         return; \
         case __LINE__:; \
     } while (0)
 
 
-#define UAIO_THROW(task, n) \
+#define UAIO_THROW(task) \
+    (task)->eno = errno; \
+    (task)->status = UAIO_TERMINATING; \
+    errno = 0; \
+    return
+
+
+#define UAIO_THROW2(task, n) \
     (task)->eno = n; \
     (task)->status = UAIO_TERMINATING; \
+    errno = 0; \
+    return
+
+
+#define UAIO_RETHROW(task) \
+    (task)->status = UAIO_TERMINATING; \
+    errno = 0; \
     return
 
 
@@ -144,6 +159,7 @@ uaio_task_sleep(struct uaio_task *task, unsigned long us);
     do { \
         (task)->current->line = __LINE__; \
         uaio_task_sleep(task, us); \
+        errno = 0; \
         return; \
         case __LINE__:; \
     } while (0)
@@ -153,6 +169,7 @@ uaio_task_sleep(struct uaio_task *task, unsigned long us);
     do { \
         (task)->current->line = __LINE__; \
         (task)->status = (newstatus); \
+        errno = 0; \
         return; \
         case __LINE__:; \
     } while (0)
@@ -161,11 +178,7 @@ uaio_task_sleep(struct uaio_task *task, unsigned long us);
 #define UAIO_RETURN(task) \
     (task)->eno = 0; \
     (task)->status = UAIO_TERMINATING; \
-    return
-
-
-#define UAIO_RETHROW(task) \
-    (task)->status = UAIO_TERMINATING; \
+    errno = 0; \
     return
 
 
@@ -203,6 +216,7 @@ uaio_file_forget(int fd);
         else { \
             (task)->status = UAIO_WAITING; \
         } \
+        errno = 0; \
         return; \
         case __LINE__:; \
     } while (0)
@@ -218,6 +232,7 @@ uaio_file_forget(int fd);
         else { \
             (task)->status = UAIO_WAITING; \
         } \
+        errno = 0; \
         return; \
         case __LINE__:; \
     } while (0)
