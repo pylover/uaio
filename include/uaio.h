@@ -21,6 +21,7 @@
 
 
 #include <stddef.h>
+#include <errno.h>
 
 #include "esp_timer.h"
 
@@ -120,7 +121,8 @@ uaio_task_sleep(struct uaio_task *task, unsigned long us);
 
 #define UAIO_FINALLY(task) \
         case -1:; } \
-    (task)->status = UAIO_TERMINATED
+    (task)->status = UAIO_TERMINATED; \
+    errno = 0
 
 
 #define UAIO_AWAIT(task, entity, coro, ...) \
